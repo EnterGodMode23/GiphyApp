@@ -15,4 +15,14 @@ interface GifService {
         @Query("rating") rating: String = Constants.RATING
     ) : Response<Gifs>
 
+    @GET("v1/gifs/search")
+    suspend fun getSearched(
+        @Query("api_key") apiKey: String = Constants.API_KEY,
+        @Query("q") query: String,
+        @Query("limit") limit: Int = Constants.LIMIT,
+        @Query("offset") offset: Int = Constants.OFFSET,
+        @Query("rating") rating: String = Constants.RATING,
+        @Query("lang") lang: String = Constants.LANG
+    ) : Response<Gifs>
+
 }

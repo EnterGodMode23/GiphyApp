@@ -50,6 +50,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
+    // Glide ProgressBar
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
     // Coroutines
     def coroutinesVersion = "1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"

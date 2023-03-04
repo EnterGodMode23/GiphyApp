@@ -5,11 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.giphyapp.data.retrofit.RetrofitClient
 import com.example.giphyapp.domain.models.Data
+import com.example.giphyapp.domain.models.Gifs
+import com.example.giphyapp.utils.Resource
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    val gifsLiveData = MutableLiveData<List<Data>?>()
-    val searchedGifsLiveData = MutableLiveData<List<Data>?>()
+
+    val gifsLiveData = MutableLiveData<Resource<Gifs>>()
+    val searchedGifsLiveData = MutableLiveData<Resource<Gifs>>()
     private val client = RetrofitClient.getRetrofit()
 
     init {
@@ -18,18 +21,22 @@ class MainViewModel : ViewModel() {
 
     private fun getGifs() {
         viewModelScope.launch {
-            val data = client.getTrends().body()?.data
-            if (data != null) {
-                gifsLiveData.postValue(data)
+            val response = client.getTrends()
+            if (response.isSuccessful) {
+                response.body().let {
+                    gifsLiveData.postValue(Resource.Success(it))
+                }
             }
         }
     }
 
     fun searchGifs(query: String) {
         viewModelScope.launch {
-            val data = client.getSearched(query = query).body()?.data
-            if (data != null) {
-                searchedGifsLiveData.postValue(data)
+            val response = client.getSearched(query = query)
+            if (response.isSuccessful) {
+                response.body().let {
+                    searchedGifsLiveData.postValue(Resource.Success(it))
+                }
             }
         }
     }

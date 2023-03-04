@@ -1,7 +1,7 @@
 package com.example.giphyapp.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +9,11 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.giphyapp.R
 import com.example.giphyapp.data.adapters.GifAdapter
 import com.example.giphyapp.databinding.FragmentMainBinding
-import com.example.giphyapp.domain.models.Data
 import com.example.giphyapp.utils.Resource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -24,8 +22,10 @@ import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var viewModel: MainViewModel
-    private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: GifAdapter
     private lateinit var searchField: EditText
 
@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -43,16 +43,48 @@ class MainFragment : Fragment() {
         viewModel = MainViewModel()
         adapter = GifAdapter()
 
+        binding.rv.adapter = adapter.apply {
+            viewModel.gifsLiveData.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        binding.pageProgressBar.visibility = View.INVISIBLE
+                        response.data?.let {
+                            adapter.differ.submitList(it.data)
+                        }
+                    }
+                    is Resource.Error -> {
+                        binding.pageProgressBar.visibility = View.INVISIBLE
+                        response.data?.let {
+                            Log.e("checkData", "MainFragment: error: ${it}")
+                        }
+                    }
+                    is Resource.Loading -> {
+                        binding.pageProgressBar.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
 
         binding.rv.adapter = adapter.apply {
-            viewModel.gifsLiveData.observe(viewLifecycleOwner, Observer {
-                this.differ.submitList(it)
-            })
-        }
-        binding.rv.adapter = adapter.apply {
-            viewModel.searchedGifsLiveData.observe(viewLifecycleOwner, Observer {
-                this.differ.submitList(it)
-            })
+            viewModel.searchedGifsLiveData.observe(viewLifecycleOwner) { response ->
+                when (response) {
+                    is Resource.Success -> {
+                        response.data?.let {
+                            binding.pageProgressBar.visibility = View.INVISIBLE
+                            adapter.differ.submitList(it.data)
+                        }
+                    }
+                    is Resource.Error -> {
+                        binding.pageProgressBar.visibility = View.INVISIBLE
+                        response.data?.let {
+                            Log.e("checkData", "MainFragment: error: ${it}")
+                        }
+                    }
+                    is Resource.Loading -> {
+                        binding.pageProgressBar.visibility = View.VISIBLE
+                    }
+                }
+            }
         }
 
         searchField = binding.edSearch

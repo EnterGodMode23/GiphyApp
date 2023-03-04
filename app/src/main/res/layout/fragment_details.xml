@@ -6,49 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".ui.details.DetailsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.main.MainActivity">
+
+        <TextView
+            android:id="@+id/details_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="title"
+            android:textSize="34sp" />
+
+        <View
+            android:id="@+id/devider_1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/teal_200" />
 
         <ImageView
             android:id="@+id/details_gif"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/downloaded_icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/downloaded_icon" />
 
-        <TextView
-            android:id="@+id/details_title"
+        <LinearLayout
+            android:id="@+id/linear_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/details_gif"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="30sp"
-            android:text="title"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="italic"
+                android:textColor="@color/teal_200"
+                android:text="by user: "/>
 
-        <TextView
-            android:id="@+id/details_user"
+            <TextView
+                android:id="@+id/details_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:text="user"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/devider_2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/details_title"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="30sp"
-            android:text="user"/>
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/teal_200" />
 
         <TextView
             android:id="@+id/details_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
             android:textSize="30sp"
             android:text="date"/>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </FrameLayout>

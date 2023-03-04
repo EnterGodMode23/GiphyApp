@@ -56,14 +56,24 @@ class GifAdapter : RecyclerView.Adapter<GifAdapter.GifViewHolder>() {
             }
 
             Glide.with(context)
-                .load(gif.images.original.url)
+                .load(gif.images?.original?.url)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.drawable.error_icon)
                 .into(gifView)
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(gif) }
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    private var onItemClickListener: ((Data) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Data) -> Unit){
+        onItemClickListener = listener
     }
 }

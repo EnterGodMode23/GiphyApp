@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.giphyapp.R
 import com.example.giphyapp.databinding.FragmentDetailsBinding
-import com.example.giphyapp.ui.main.MainFragmentDirections
 
 class DetailsFragment : Fragment() {
 

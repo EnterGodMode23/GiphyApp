@@ -3,7 +3,9 @@ package com.example.giphyapp.ui.main
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.giphyapp.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
